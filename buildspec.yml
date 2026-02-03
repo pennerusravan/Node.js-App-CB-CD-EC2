@@ -1,24 +1,13 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 18
-
   pre_build:
     commands:
-      - echo "Listing source files"
+      - echo "PWD"
+      - pwd
+      - echo "FILES"
       - ls -la
-
-  build:
-    commands:
-      - echo "Build phase"
 
 artifacts:
   files:
-    - appspec.yml
-    - server.js
-    - package.json
-    - package-lock.json
-    - scripts/**/*
-    - lambda/**/*
+    - '**/*'
