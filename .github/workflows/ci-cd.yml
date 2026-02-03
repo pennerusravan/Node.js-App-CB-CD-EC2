@@ -1,25 +1,36 @@
-name: CI-CD-Pipeline
+name: Deploy-to-EC2
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
+    - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+        aws-region: us-east-1
 
-    - name: Trigger CodeBuild
+    - name: Build & Zip Artifact
       run: |
-        aws codebuild start-build \
-          --project-name order-app-build
+        zip -r order-app.zip .
+
+    - name: Upload to S3
+      run: |
+        aws s3 cp order-app.zip s3://order-app-artifacts-456/order-app.zip
+
+    - name: Deploy using CodeDeploy
+      run: |
+        aws deploy create-deployment \
+          --application-name order-app \
+          --deployment-group-name order-app-dg \
+          --s3-location bucket=order-app-artifacts-456,key=order-app.zip,bundleType=zip
