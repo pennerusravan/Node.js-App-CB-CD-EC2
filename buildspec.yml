@@ -1,13 +1,14 @@
 version: 0.2
 
 phases:
-  pre_build:
+  install:
+    runtime-versions:
+      nodejs: 18
+  build:
     commands:
-      - echo "PWD"
-      - pwd
-      - echo "FILES"
+      - echo "Build started"
       - ls -la
-
+      - zip -r artifact.zip .
 artifacts:
   files:
-    - '**/*'
+    - artifact.zip
