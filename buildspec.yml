@@ -4,10 +4,15 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
+
   build:
     commands:
       - echo "Build started"
-      - zip -r artifact.zip .
+
+  post_build:
+    commands:
+      - echo "Build completed"
+
 artifacts:
   files:
-    - artifact.zip
+    - '**/*'
