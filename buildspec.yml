@@ -8,7 +8,7 @@ phases:
     commands:
       - echo "Build started"
       - ls -la
-      - zip -r artifact.zip .
+
 artifacts:
   files:
-    - artifact.zip
+    - '**/*'
