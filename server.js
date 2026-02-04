@@ -1,18 +1,16 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
 
-// Disable caching
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  next();
-});
+// Serve static files from "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Root route → show image
 app.get('/', (req, res) => {
-  res.send('Order App Running without CodeBuild & Lambda');
+  res.sendFile(path.join(__dirname, 'public', 'order.png'));
 });
 
-app.listen(3000, '0.0.0.0', () => {
+app.listen(3000, () => {
   console.log('App running on port 3000');
 });
