@@ -1,2 +1,2 @@
 #!/bin/bash
-pkill node || true
+sudo pkill -f "node server.js" || true
